@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block title %}{{ _('title_result') }}{% endblock %}
+{% block body %}
+  <h2>{{ _('result_hello').format(user.name) }}</h2>
+  <h3>{{ _('result_hdr') }}</h3>
+
+  <div style="white-space: pre-line; border:1px solid #ccc; padding:1em; border-radius:6px;">
+    {{ result }}
+  </div>
+
+  <p style="margin-top:1em;color:#555;">
+    {{ _('result_desc') }}
+  </p>
+
+  <div style="margin-top:1.5em;">
+    <a href="{{ url_for('replay', user_id=user.id) }}">
+      <button>{{ _('btn_replay') }}</button>
+    </a>
+    <a href="{{ url_for('limitations', user_id=user.id) }}">
+      <button>{{ _('btn_plan_trip') }}</button>
+    </a>
+  </div>
+{% endblock %}

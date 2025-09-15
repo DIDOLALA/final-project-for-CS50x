@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ _('title_index') }}{% endblock %}
+
+{% block body %}
+
+<h3>{{ _('index_hdr1') }}</h3>
+<h3>{{ _('index_hdr2') }}</h3>
+<h3>{{ _('index_hdr3') }}</h3>
+
+<form action="/" method="post">
+  <input autocomplete="off" autofocus name="name" placeholder="{{ _('index_name_plh') }}" type="text" required>
+  ...
+    <select id="language" name="language" required>
+        <option value="" disabled selected>{{ _('index_lang_hdr') }}</option>
+        <option value="en">English</option>
+        <option value="zh">中文 (Chinese)</option>
+    </select>
+  <button type="submit">{{ _('btn_start_journey') }}</button>
+</form>
+
+{% endblock %}

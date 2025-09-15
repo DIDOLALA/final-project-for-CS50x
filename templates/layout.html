@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="{{ session.get('language','en') }}">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        /* 让页面两侧永远留空 */
+        .page-wrapper{
+            max-width:1000px;   /* 可视区宽度，可自己调 */
+            margin:0 auto;       /* 水平居中 */
+            padding:0 1rem;      /* 小屏时至少留 1rem */
+        }
+    </style>
+</head>
+<body>
+    <header style="padding:0.5em 1em;background:#f5f5f5;border-bottom:1px solid #ddd;">
+        <nav style="display:flex;align-items:center;">
+            <!-- 左侧：未登录时显示 Hello -->
+            <div>
+                {% if not session.get('uid') %}
+                    {{ _('hello_guest') }}
+                {% else %}
+                    <span style="margin-right:1em;">
+                        {{ _('hello_user').format(session.get('uname','')) }}
+                    </span>
+                {% endif %}
+            </div>
+            <!-- 右侧：登录/登出区域 -->
+            <div style="margin-left:auto;">
+                {% if session.get('uid') %}
+                    <a href="{{ url_for('logout') }}">{{ _('btn_logout') }}</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">{{ _('btn_login') }}</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <!-- 所有子模板内容都包在 page-wrapper 里 -->
+    <div class="page-wrapper">
+        {% block body %}{% endblock %}
+    </div>
+</body>
+</html>

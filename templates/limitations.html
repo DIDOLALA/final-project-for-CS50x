@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+{% block title %}{{ _('title_limitations') }}{% endblock %}
+{% block body %}
+<h3>{{ _('lim_hdr') }}</h3>
+<form method="post" id="limitation-form">
+  <p>{{ _('lim_duration') }}</p>
+  <label><input type="radio" name="duration" value="1-3天" required> {{ _('lim_13days') }}</label>
+  <label><input type="radio" name="duration" value="4-7天"> {{ _('lim_47days') }}</label>
+  <label><input type="radio" name="duration" value="1-2周"> {{ _('lim_12weeks') }}</label><br><br>
+
+  <p>{{ _('lim_pace') }}</p>
+  <label><input type="radio" name="pace" value="紧凑，尽可能多体验" required> {{ _('lim_compact') }}</label>
+  <label><input type="radio" name="pace" value="适中，兼顾休息"> {{ _('lim_medium') }}</label>
+  <label><input type="radio" name="pace" value="松弛，轻松慢游"> {{ _('lim_relaxed') }}</label><br><br>
+
+  <p>{{ _('lim_budget') }}</p>
+  <label><input type="radio" name="budget" value="经济" required> {{ _('lim_econ') }}</label>
+  <label><input type="radio" name="budget" value="舒适"> {{ _('lim_comfort') }}</label>
+  <label><input type="radio" name="budget" value="奢侈"> {{ _('lim_luxury') }}</label><br><br>
+  
+  <button type="submit" id="submit-btn">{{ _('btn_submit') }}</button>
+
+  <script>
+  document.getElementById('limitation-form').addEventListener('submit', function (e) {
+    const btn = document.getElementById('submit-btn');
+    /* 如果按钮已经是禁用状态，就阻止重复提交 */
+    if (btn.disabled) {
+      e.preventDefault();
+      return;
+    }
+    /* 立即禁用并换文字 */
+    btn.disabled = true;
+    btn.innerText = "{{ _('btn_waiting') }}";
+    /* 60 秒后恢复 */
+    setTimeout(function () {
+      btn.disabled = false;
+      btn.innerText = "{{ _('btn_submit') }}";
+    }, 60000);
+  });
+  </script>
+</form>
+{% endblock %}
