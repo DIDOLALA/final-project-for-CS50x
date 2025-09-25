@@ -1,0 +1,149 @@
+/* 新增的 Result 页面特定样式 */
+.result-content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* **主要修改：所有子元素居中** */
+    width: 100%;
+    max-width: 900px;
+    text-align: center;
+}
+
+.result-header {
+    display: flex;
+    font-size: 2rem;
+    color: #fffefe;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    align-items: center;
+    justify-content: center; /* **主要修改：标题居中** */
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    text-align: left;
+}
+
+
+.result-card-container {
+    display: flex;
+    flex-direction: row;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(5px);
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    width: 100%; /* **主要修改：卡片宽度适应父容器** */
+    margin-bottom: 1rem;
+    align-items: flex-start;
+}
+
+.result-image {
+    flex: 1;
+    max-width: 50%; /* **调整图片宽度占比** */
+    border-radius: 10px;
+    overflow: hidden;
+    margin-right: 1.5rem; /* **调整右侧边距** */
+}
+
+.result-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+}
+
+.result-content {
+    flex: 1;
+    padding: 0;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* **保持文字顶部对齐** */
+}
+
+.result-text {
+    line-height: 1.6;
+    text-align: left; /* **保持文字左对齐** */
+}
+
+.result-text strong {
+    font-weight: 700; /* 字体加粗 */
+    font-size: 1.1em; /* 稍微放大字体 */
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    color: #2c3e50;
+}
+
+.result-text strong:first-child {
+    margin-top: 0;
+}
+
+.result-desc {
+    text-align: center; /* **主要修改：描述文字居中** */
+    margin-top: 0em;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+.result-desc p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+.result-desc p:first-child {
+    margin-bottom: 0.5em;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center; 
+    gap: 1em;
+    margin-top: 1.5em;
+}
+
+.result-button {
+    padding: 0.75rem 2rem;
+    background-color: #878787;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    outline: none;
+    text-decoration: none;
+}
+
+.result-button:hover {
+    background-color: #7e7e7e;
+}
+
+.result-button:active {
+    transform: translateY(1px);
+}
+
+/* 移动端响应式 */
+@media (max-width: 768px) {
+    .result-card-container {
+        flex-direction: column;
+    }
+
+    .result-image {
+        max-width: 100%;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        margin-right: 0;
+    }
+
+    .result-content {
+        padding-left: 0;
+        padding-top: 1rem;
+        text-align: center; 
+    }
+    
+    .result-text strong {
+        text-align: center; 
+    }
+    
+    .result-desc, .button-group {
+        text-align: center;
+    }
+}

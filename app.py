@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from functools import wraps
 import time, logging
 from translations import TRANS
+import markdown2
 
 
 logging.basicConfig(level=logging.INFO)   
@@ -19,7 +20,6 @@ def gettext(key, lang=None):
     """lang 为 None 则自动取 session['language']"""
     lang = lang or session.get('language', 'en')
     return TRANS.get(key, {}).get(lang, key)          # 找不到 key 直接回显 key
-    print("【DEBUG】gettext used lang:", lang, "for key:", key)
 
 # 配置 application
 def create_app():
@@ -32,6 +32,7 @@ def create_app():
 
     app.jinja_env.globals['_'] = gettext                # 模板里直接用 {{ _('btn_next') }}
 
+    
     def login_required(f):
         @wraps(f)
         def decorated(*args, **kwargs):
@@ -145,8 +146,7 @@ def create_app():
             user.has_submitted_info = True
             db.session.commit()
             
-            return redirect(url_for("result", user_id=user_id))
-            
+            return redirect(url_for("result", user_id=user_id))     
         return render_template("preferences.html", user=user, user_id=user_id)
 
     # 偏好 API (保留用于可能的AJAX实现)
@@ -156,7 +156,6 @@ def create_app():
         user_id = data.get("user_id")
         if not user_id:
             return jsonify({"ok": False, "msg": "user_id is required"}), 400
-
         user = User.query.get(user_id)
         if not user:
             return jsonify({"ok": False, "msg": "User not found"}), 404
@@ -190,6 +189,7 @@ def create_app():
         recommend the destination that best matches their needs. 
         Please respond in output format based on {prompt_language} and ensure that all outputted text is in {prompt_language},
         and make sure do not show the words in parentheses of output format.
+        **Use HTML tags for formatting, including <strong> for titles and <br> for line breaks.**
 
         ### User Profile
         - Name: {user.name}
@@ -203,24 +203,24 @@ def create_app():
         {pref.payload}
 
         if {prompt_language} == "English", output format is:
-            Dream Destination (≤20 chars, down to city/county/town):
-            Best Season (≤10 chars):
-            Reason for Recommendation (≤100 chars, highlight individuality):
-            Must-visit Recommendations:
-            · Attraction (≤20 chars):
-            · Experience (≤20 chars):
-            · Food (≤20 chars):
-            Possible Challenges & Suggestions (≤20 chars):
+            <strong>Dream Destination:</strong> (≤20 chars, down to city/county/town)<br>
+            <strong>Best Season:</strong> (≤10 chars)<br>
+            <strong>Reason for Recommendation:</strong> (≤100 chars, highlight individuality)<br>
+            <strong>Must-visit Recommendations:</strong><br>
+            &nbsp;&nbsp;· Attraction (≤20 chars)<br>
+            &nbsp;&nbsp;· Experience (≤20 chars)<br>
+            &nbsp;&nbsp;· Food (≤20 chars)<br>
+            <strong>Travel Suggestions:</strong> (≤20 chars)
 
         else {prompt_language} == "中文, output format is:
-            梦想地点 (≤20 字, 具体到市、镇、乡等):
-            最佳季节 (≤10 字):
-            推荐理由 (≤100 字, 突出个性):
-            必游推荐:
-            · 景点 (≤20 字):
-            · 体验 (≤20 字):
-            · 美食 (≤20 字):
-            可能的挑战及建议 (≤20 字):
+            <strong>梦想地点:</strong> (≤20 字, 具体到市、镇、乡等)<br>
+            <strong>最佳季节:</strong> (≤10 字)<br>
+            <strong>推荐理由:</strong> (≤100 字, 突出个性)<br>
+            <strong>必游推荐:</strong><br>
+            &nbsp;&nbsp;· 景点 (≤20 字)<br>
+            &nbsp;&nbsp;· 体验 (≤20 字)<br>
+            &nbsp;&nbsp;· 美食 (≤20 字)<br>
+            <strong>旅行建议:</strong> (≤20 字)
         """
 
         # 调用 DeepSeek API
@@ -311,7 +311,8 @@ def create_app():
         Now, strickly find the desitination in **{result_text}**, and design a feasible itinerary for it.
         considering the user’s travel duration, pace, and budget.
         Please respond in output format based on {prompt_language} and ensure that all outputted text is in {prompt_language},
-        and make sure do not show the words in parentheses of output format..
+        and make sure do not show the words in parentheses of output format.
+         **Use HTML tags for formatting, including <strong> for titles and <br> for line breaks.**
 
         === USER PROFILE ===
         Name: {user.name}
@@ -330,60 +331,72 @@ def create_app():
         Budget: {lim.budget}
 
         if {prompt_language} == "English", output format is:
-            Ideal Destination (≤10 chars):
-            Best Season (≤10 chars):
-            Reason for Recommendation (≤200 chars, highlight match with user’s personality and preferences):
-            Must-visit Recommendations:
-            · Attraction (≤20 chars):
-            · Experience (≤20 chars):
-            · Food (≤20 chars):
-            Detailed Itinerary:
-                · Day 1 (Overview, ≤15 chars):
-                · Recommended Attraction (≤20 chars, with feature description):
-                · Recommended Experience (≤20 chars):
-                · Recommended Food (≤10 chars):
-                · Recommended Accommodation (≤10 chars):
+            <strong>Ideal Destination:</strong> (≤10 chars)
+
+            <strong>Best Season:</strong> (≤10 chars)
+
+            <strong>Reason for Recommendation:</strong> (≤200 chars, highlight match with user’s personality and preferences)
+            
+            <strong>Must-visit Recommendations:</strong>
+            · Attraction: (≤20 chars)
+            · Experience: (≤20 chars)
+            · Food: (≤20 chars)
+
+            <strong>Detailed Itinerary:</strong>
                 
-                · Day 2 (Overview, ≤15 chars):
-                · Recommended Attraction (≤20 chars, with feature description):
-                · Recommended Experience (≤20 chars):
-                · Recommended Food (≤10 chars):
-                · Recommended Accommodation (≤10 chars):
+                · <strong>Day 1:</strong> (Overview, ≤15 chars)
+                · Recommended Attraction: (≤20 chars, with feature description)
+                · Recommended Experience: (≤20 chars)
+                · Recommended Food: (≤10 chars)
+                · Recommended Accommodation: (≤10 chars)
+                
+                · <strong>Day 2:</strong>(Overview, ≤15 chars)
+                · Recommended Attraction: (≤20 chars, with feature description)
+                · Recommended Experience: (≤20 chars)
+                · Recommended Food: (≤10 chars)
+                · Recommended Accommodation: (≤10 chars)
                 ……
-                · Day n (Overview, ≤15 chars):
-                · Recommended Attraction (≤20 chars, with feature description):
-                · Recommended Experience (≤20 chars):
-                · ecommended Food (≤10 chars):
-                · Recommended Accommodation (≤10 chars):
-            Possible Challenges & Suggestions (≤25 chars):
+                · <strong>Day n:</strong>(Overview, ≤15 chars)
+                · Recommended Attraction: (≤20 chars, with feature description)
+                · Recommended Experience: (≤20 chars)
+                · ecommended Food: (≤10 chars)
+                · Recommended Accommodation: (≤10 chars)
+
+            <strong>Possible Challenges & Suggestions:</strong>(≤25 chars)
 
         if {prompt_language} == "中文", output format is:
-            梦想地点 (≤10 字):
-            最佳季节 (≤10 字):
-            推荐理由 (≤200 字, 突出用户个性与偏好):
-            必去推荐s:
+            <strong>梦想地点:</strong>(≤10 字)
+
+            <strong>最佳季节:</strong>(≤10 字)
+
+            <strong>推荐理由:</strong>(≤200 字, 突出用户个性与偏好)
+
+            <strong>必去推荐:</strong>
             · 景点 (≤20 字):
             · 体验 (≤20 字):
             · 美食 (≤20 字):
-            详细行程:
-                · 第1天 (概述, ≤15 字):
-                · 推荐景点 (≤20 字, 特点介绍):
-                · 推荐体验 (≤20 字):
-                · 推荐美食 (≤10 字):
-                · 推荐住宿 (≤10 字):
+            
+            <strong>详细行程:</strong>
+
+                · <strong>第1天:</strong>(概述, ≤15 字)
+                · 推荐景点: (≤20 字, 特点介绍)
+                · 推荐体验: (≤20 字)
+                · 推荐美食: (≤10 字)
+                · 推荐住宿: (≤10 字)
                 
-                · 第2天 (概述, ≤15 字):
-                · 推荐景点 (≤20 字, 特点介绍):
-                · 推荐体验 (≤20 字):
-                · 推荐美食 (≤10 字):
-                · 推荐住宿 (≤10 字):
+                · <strong>第2天:</strong>(概述, ≤15 字)
+                · 推荐景点:(≤20 字, 特点介绍)
+                · 推荐体验:(≤20 字)
+                · 推荐美食:(≤10 字)
+                · 推荐住宿:(≤10 字)
                 ……
-                · 第n天 (概述, ≤15 字):
-                · 推荐景点 (≤20 字, 特点介绍):
-                · 推荐体验 (≤20 字):
-                · 推荐美食 (≤10 字):
-                · 推荐住宿 (≤10 字):
-            可能的挑战与建议 (≤25 字):
+                · <strong>第n天:</strong>(概述, ≤15 字)
+                · 推荐景点:(≤20 字, 特点介绍)
+                · 推荐体验:(≤20 字)
+                · 推荐美食:(≤10 字)
+                · 推荐住宿:(≤10 字)
+            
+            <strong>可能的挑战与建议:</strong> (≤25 字)
         """
 
         # 4. 调用 DeepSeek

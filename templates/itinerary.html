@@ -1,19 +1,39 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 {% block title %}{{ _('title_itinerary') }}{% endblock %}
-{% block body %}
-  <h2>{{ _('itin_hdr').format(user.name) }}</h2>
-  <div style="white-space: pre-line; border:1px solid #ccc; padding:1em; border-radius:6px;">
-    {{ content }}
-  </div>
-  <div style="margin-top:2em;">
-    <a href="{{ url_for('replay', user_id=user.id) }}">
-      <button>{{ _('btn_replay') }}</button>
-    </a>
 
-    {% if not session.get('uid') %}
-      <a href="{{ url_for('index') }}">
-        <button>{{ _('btn_back_home') }}</button>
-      </a>
-    {% endif %}
+{% block page_background %}
+background-image: url('{{ url_for('static', filename='images/it_bg.jpg') }}');
+{% endblock %}
+
+{% block body %}
+<div class="result-content-container">
+  <!-- 页头 -->
+  <div class="result-header">
+    <h4>{{ _('itin_hdr').format(user.name) }}</h4>
   </div>
+  <!-- 卡片主体（去掉图片，只剩文字） -->
+  <div class="result-card-container">
+    <div class="result-content" style="max-width:100%;"> <!-- 占满整行 -->
+      <div class="result-text">
+        <!-- 保留原来的 pre-line 格式 -->
+        <div style="white-space: pre-line; line-height:1.6;">
+          {{ content|safe }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 描述文字区域（空着也行，保持结构一致） -->
+  <div class="result-desc"></div>
+  <!-- 按钮组 -->
+  <div class="button-group">
+        <a href="{{ url_for('replay', user_id=user.id) }}" class="result-button">
+        {{ _('btn_replay') }}
+        </a>
+        {% if not session.get('uid') %}
+        <a href="{{ url_for('index') }}" class="result-button">
+            {{ _('btn_back_home') }}
+        </a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

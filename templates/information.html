@@ -1,97 +1,144 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 {% block title %}{{ _('title_information') }}{% endblock %}
+
+{% block page_background %}
+background-image: url('{{ url_for('static', filename='images/info_bg.jpg') }}');
+{% endblock %}
+
 {% block body %}
-<h3>{{ _('info_hdr') }}</h3>
+<div class="info-content-wrapper"></div>
+<div class="main-bg-container">
+    <div class="info-content-wrapper">
+        <h4 class="main-title">{{ _('info_hdr') }}</h4>
 
-<!-- 未登录不弹窗，登录才弹 -->
-<form action="/information" method="post"
-      {% if need_confirm %}onsubmit="return confirmSubmit()"{% endif %}>
+        <form action="/information" method="post" onsubmit="return showConfirmModal(event)">
 
-  {% if session.get('temp_name') %}
-    <input type="hidden" name="name" value="{{ session.get('temp_name') }}">
-  {% else %}
-    <div>
-      <label for="name">{{ _('info_name') }}</label>
-      <input type="text" id="name" name="name" required>
+            {% if session.get('temp_name') %}
+                <input type="hidden" name="name" value="{{ session.get('temp_name') }}">
+            {% else %}
+                <div class="name-input-container">
+                    <label for="name">{{ _('info_name') }}</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+            {% endif %}
+
+            <div class="cards-container">
+                <div class="info-card">
+                    <h4>{{ _('info_gender') }}</h4>
+                    <div class="form-options">
+                        <label class="option-item"><input type="radio" name="gender" value="男" required> {{ _('info_male') }}</label>
+                        <label class="option-item"><input type="radio" name="gender" value="女"> {{ _('info_female') }}</label>
+                        <label class="option-item"><input type="radio" name="gender" value="其它"> {{ _('info_other') }}</label>
+                    </div>
+                    <br>
+                    <h4>{{ _('info_nationality') }}</h4>
+                    <select id="nationality" name="nationality" style="width:100%" required>
+                        <option value="" disabled selected>{{ _('info_nationality_plh') }}</option>
+                        <optgroup label="{{ _('nat_asia') }}">
+                            <option value="CN">{{ _('nat_china') }}</option>
+                            <option value="JP">{{ _('nat_japan') }}</option>
+                            <option value="KR">{{ _('nat_korea') }}</option>
+                            <option value="IN">{{ _('nat_india') }}</option>
+                            <option value="TH">{{ _('nat_thailand') }}</option>
+                            <option value="SG">{{ _('nat_singapore') }}</option>
+                        </optgroup>
+                        <optgroup label="{{ _('nat_africa') }}">
+                            <option value="ZA">{{ _('nat_southafrica') }}</option>
+                            <option value="EG">{{ _('nat_egypt') }}</option>
+                            <option value="NG">{{ _('nat_nigeria') }}</option>
+                        </optgroup>
+                        <optgroup label="{{ _('nat_europe') }}">
+                            <option value="UK">{{ _('nat_uk') }}</option>
+                            <option value="FR">{{ _('nat_france') }}</option>
+                            <option value="DE">{{ _('nat_germany') }}</option>
+                            <option value="ES">{{ _('nat_spain') }}</option>
+                            <option value="IT">{{ _('nat_italy') }}</option>
+                        </optgroup>
+                        <optgroup label="{{ _('nat_america') }}">
+                            <option value="US">{{ _('nat_usa') }}</option>
+                            <option value="CA">{{ _('nat_canada') }}</option>
+                            <option value="BR">{{ _('nat_brazil') }}</option>
+                            <option value="AR">{{ _('nat_argentina') }}</option>
+                            <option value="MX">{{ _('nat_mexico') }}</option>
+                        </optgroup>
+                        <optgroup label="{{ _('nat_oceania') }}">
+                            <option value="AU">{{ _('nat_australia') }}</option>
+                            <option value="NZ">{{ _('nat_newzealand') }}</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <div class="info-card">
+                    <h4>{{ _('info_age') }}</h4>
+                    <div class="form-options">
+                        <label class="option-item"><input type="radio" name="age" value="≤15岁" required> {{ _('age_under15') }}</label>
+                        <label class="option-item"><input type="radio" name="age" value="16–25岁"> {{ _('age_16_25') }}</label>
+                        <label class="option-item"><input type="radio" name="age" value="26–35岁"> {{ _('age_26_35') }}</label>
+                        <label class="option-item"><input type="radio" name="age" value="36–49岁"> {{ _('age_36_49') }}</label>
+                        <label class="option-item"><input type="radio" name="age" value="50–65岁"> {{ _('age_50_65') }}</label>
+                        <label class="option-item"><input type="radio" name="age" value="65岁以上"> {{ _('age_over65') }}</label>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <h4>{{ _('info_profession') }}</h4>
+                    <div class="form-options">
+                        <label class="option-item"><input type="radio" name="profession" value="艺术/设计" required> {{ _('prof_art') }}</label>
+                        <label class="option-item"><input type="radio" name="profession" value="人文/教育"> {{ _('prof_humanities') }}</label>
+                        <label class="option-item"><input type="radio" name="profession" value="科技/工程"> {{ _('prof_tech') }}</label>
+                        <label class="option-item"><input type="radio" name="profession" value="商业/金融"> {{ _('prof_business') }}</label>
+                        <label class="option-item"><input type="radio" name="profession" value="自然/环保"> {{ _('prof_nature') }}</label>
+                        <label class="option-item"><input type="radio" name="profession" value="其他"> {{ _('prof_others') }}</label>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-button">{{ _('btn_begin') }}</button>
+        </form>
+
+        <div id="custom-modal" class="modal-backdrop">
+            <div class="modal-content">
+                <p>{{ _('info_confirm') }}</p>
+                <div class="modal-buttons">
+                    <button id="confirm-yes" class="modal-button-yes">{{ _('btn_yes') }}</button>
+                    <button id="confirm-no" class="modal-button-no">{{ _('btn_no') }}</button>
+                </div>
+            </div>
+        </div>
+
     </div>
-  {% endif %}
+</div>
 
-  <!-- 1. 性别 -->
-  <p>1. {{ _('info_gender') }}</p>
-  <label><input type="radio" name="gender" value="男" required> {{ _('info_male') }}</label>
-  <label><input type="radio" name="gender" value="女"> {{ _('info_female') }}</label>
-  <label><input type="radio" name="gender" value="其它"> {{ _('info_other') }}</label><br><br>
-
-  <!-- 2. 国籍（英文已补） -->
-  <p>2. {{ _('info_nationality') }}</p>
-  <select id="nationality" name="nationality" style="width:300px" required>
-    <option value="" disabled selected>{{ _('info_nationality_plh') }}</option>
-    <optgroup label="{{ _('nat_asia') }}">
-      <option value="CN">{{ _('nat_china') }}</option>
-      <option value="JP">{{ _('nat_japan') }}</option>
-      <option value="KR">{{ _('nat_korea') }}</option>
-      <option value="IN">{{ _('nat_india') }}</option>
-      <option value="TH">{{ _('nat_thailand') }}</option>
-      <option value="SG">{{ _('nat_singapore') }}</option>
-    </optgroup>
-    <optgroup label="{{ _('nat_africa') }}">
-      <option value="ZA">{{ _('nat_southafrica') }}</option>
-      <option value="EG">{{ _('nat_egypt') }}</option>
-      <option value="NG">{{ _('nat_nigeria') }}</option>
-    </optgroup>
-    <optgroup label="{{ _('nat_europe') }}">
-      <option value="UK">{{ _('nat_uk') }}</option>
-      <option value="FR">{{ _('nat_france') }}</option>
-      <option value="DE">{{ _('nat_germany') }}</option>
-      <option value="ES">{{ _('nat_spain') }}</option>
-      <option value="IT">{{ _('nat_italy') }}</option>
-    </optgroup>
-    <optgroup label="{{ _('nat_america') }}">
-      <option value="US">{{ _('nat_usa') }}</option>
-      <option value="CA">{{ _('nat_canada') }}</option>
-      <option value="BR">{{ _('nat_brazil') }}</option>
-      <option value="AR">{{ _('nat_argentina') }}</option>
-      <option value="MX">{{ _('nat_mexico') }}</option>
-    </optgroup>
-    <optgroup label="{{ _('nat_oceania') }}">
-      <option value="AU">{{ _('nat_australia') }}</option>
-      <option value="NZ">{{ _('nat_newzealand') }}</option>
-    </optgroup>
-  </select><br><br>
-
-  <!-- 3. 年龄 -->
-  <p>3. {{ _('info_age') }}</p>
-  <label><input type="radio" name="age" value="≤15岁" required> {{ _('age_under15') }}</label>
-  <label><input type="radio" name="age" value="16–25岁"> {{ _('age_16_25') }}</label>
-  <label><input type="radio" name="age" value="26–35岁"> {{ _('age_26_35') }}</label>
-  <label><input type="radio" name="age" value="36–49岁"> {{ _('age_36_49') }}</label>
-  <label><input type="radio" name="age" value="50–65岁"> {{ _('age_50_65') }}</label>
-  <label><input type="radio" name="age" value="65岁以上"> {{ _('age_over65') }}</label><br><br>
-
-  <!-- 4. 职业 / 兴趣 -->
-  <p>4. {{ _('info_profession') }}</p>
-  <label><input type="radio" name="profession" value="艺术/设计" required> {{ _('prof_art') }}</label>
-  <label><input type="radio" name="profession" value="人文/教育"> {{ _('prof_humanities') }}</label>
-  <label><input type="radio" name="profession" value="科技/工程"> {{ _('prof_tech') }}</label>
-  <label><input type="radio" name="profession" value="商业/金融"> {{ _('prof_business') }}</label>
-  <label><input type="radio" name="profession" value="自然/环保"> {{ _('prof_nature') }}</label>
-  <label><input type="radio" name="profession" value="其他"> {{ _('prof_others') }}</label><br><br>
-
-  <button type="submit">{{ _('btn_begin') }}</button>
-</form>
-
-<!-- select2 保持原样 -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-  $(document).ready(function() {
-    $('#nationality').select2({ placeholder: "{{ _('info_nationality_plh') }}" });
-  });
-  {% if need_confirm %}
-  function confirmSubmit(){
-    return confirm("{{ _('info_confirm') }}");
-  }
-  {% endif %}
+    $(document).ready(function() {
+        $('#nationality').select2({ placeholder: "{{ _('info_nationality_plh') }}" });
+    });
+
+    // 自定义弹窗的 JavaScript 逻辑
+    function showConfirmModal(event) {
+        // 只有当需要确认时才显示弹窗
+        {% if need_confirm %}
+            event.preventDefault(); // 阻止表单默认提交
+            const modal = document.getElementById('custom-modal');
+            modal.style.display = 'flex';
+
+            const form = event.target;
+            
+            document.getElementById('confirm-yes').onclick = () => {
+                modal.style.display = 'none';
+                form.submit(); // 确认后手动提交表单
+            };
+
+            document.getElementById('confirm-no').onclick = () => {
+                modal.style.display = 'none';
+            };
+            return false;
+        {% else %}
+            return true;
+        {% endif %}
+    }
 </script>
 {% endblock %}

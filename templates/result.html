@@ -1,23 +1,38 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 {% block title %}{{ _('title_result') }}{% endblock %}
+
+{% block page_background %}
+background-image: url('{{ url_for('static', filename='images/rt_bg.jpg') }}');
+{% endblock %}
+
 {% block body %}
-  <h2>{{ _('result_hello').format(user.name) }}</h2>
-  <h3>{{ _('result_hdr') }}</h3>
+<div class="result-content-container">
+    <div class="result-header">
+        <h4>{{ _('result_hello').format(user.name + ', ') }}{{ _('result_hdr') }}</h4>
+    </div>
 
-  <div style="white-space: pre-line; border:1px solid #ccc; padding:1em; border-radius:6px;">
-    {{ result }}
-  </div>
+    <div class="result-card-container">
+        <div class="result-content">
+            <div class="result-text">
+                {{ result | safe }}
+            </div>
+        </div>
+    </div>
 
-  <p style="margin-top:1em;color:#555;">
-    {{ _('result_desc') }}
-  </p>
+    <div class="result-desc">
+        <p>{{ _('result_desc').split('\n')[0] }}</p>
+        {% if _('result_desc').split('\n')|length > 1 %}
+            <p>{{ _('result_desc').split('\n')[1] }}</p>
+        {% endif %}
+    </div>
 
-  <div style="margin-top:1.5em;">
-    <a href="{{ url_for('replay', user_id=user.id) }}">
-      <button>{{ _('btn_replay') }}</button>
-    </a>
-    <a href="{{ url_for('limitations', user_id=user.id) }}">
-      <button>{{ _('btn_plan_trip') }}</button>
-    </a>
-  </div>
+    <div class="button-group">
+        <a href="{{ url_for('replay', user_id=user.id) }}" class="result-button">
+            {{ _('btn_replay') }}
+        </a>
+        <a href="{{ url_for('limitations', user_id=user.id) }}" class="result-button">
+            {{ _('btn_plan_trip') }}
+        </a>
+    </div>
+</div>
 {% endblock %}

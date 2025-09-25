@@ -1,0 +1,36 @@
+.c-form-input {
+padding: 0.6rem 1rem;
+border: 1px solid #ccc;
+border-radius: 8px;
+font-size: 1rem;
+font-family: inherit;
+color: #333;
+transition: all 0.3s ease;
+width: 300px; 
+margin-bottom: 0.2rem;         
+}
+.c-form-input:focus {
+outline: none;
+border-color: #777;
+box-shadow: 0 0 0 3px rgba(150, 150, 150, 0.25);
+}
+.c-form-input::placeholder {
+color: #999;
+}
+.c-form-button {
+padding: 0.6rem 1.5rem;
+background-color: #878787;
+color: white;
+border: none;
+border-radius: 8px;
+font-size: 1rem;
+font-weight: bold;
+cursor: pointer;
+transition: background-color 0.3s ease, transform 0.1s ease;
+outline: none;
+margin-top: 0.5rem
+}
+.c-form-button:hover {
+background-color: #7e7e7e;
+}
+.c-form-button:active { transform: translateY(1px); }

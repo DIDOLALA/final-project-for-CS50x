@@ -1,0 +1,211 @@
+ body, html {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        display: flex; /* 使用 Flexbox 布局 */
+        flex-direction: column; /* 垂直方向排列 */
+        {% block page_background %}{% endblock %}
+        background-repeat: no-repeat;     /* 不重复 */
+        background-size: cover;           /* 拉伸并保持比例，覆盖整个屏幕 */
+        background-position: center;      /* 居中对齐 */
+        background-attachment: fixed;     /* （可选）固定背景，页面滚动时不动 */
+        }
+
+/* 让页眉始终在顶部 */
+header {
+    position: fixed;          /* 建立层叠上下文 */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1030;
+    height: 56px;               /* 确保在上层 */
+    padding: 0.5em 1em;
+    background: rgba(245, 245, 245, 0.5);
+    border-bottom: 1px solid rgba(255,255,255,.1);
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+/* 让内容区域填充剩余空间 */
+.page-wrapper {
+    flex-grow: 1; /* 占据剩余空间 */
+    display: flex;
+    flex-direction: column;
+}
+
+/* 以下是为 information.html 页面新增的样式 */   
+.main-bg-container {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* 固定背景，滚动时有视差效果 */
+    margin-top: 0; /* 移除可能的多余边距 */
+}
+
+.info-content-wrapper {
+    max-width: 1200px;
+    width: 100%;
+    padding: 0rem;
+    text-align: center; /* 居中标题 */
+    background: transparent; /* 确保背景透明 */
+    margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-title {
+    font-size: 3rem;
+    color: #fffefe;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    margin-bottom: 3rem;
+}
+
+.cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem; /* 卡片间距 */
+}
+
+.info-card {
+    background: rgba(255, 255, 255, 0.6); /* 半透明白色背景 */
+    backdrop-filter: blur(5px); /* 毛玻璃效果 */
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    flex: 0 0 30%; /* 每个卡片平均占据空间 */
+    min-width: 280px; /* 防止卡片过窄 */
+    max-width: 350px;
+    text-align: left; /* 内容左对齐 */
+}
+
+.info-card h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.form-options {
+    display: flex;
+    flex-direction: column;
+}
+
+.option-item {
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.option-item input[type="radio"] {
+    margin-right: 0.5rem;
+}
+
+.submit-button {
+    margin-top: 2rem;
+    padding: 0.75rem 2rem;
+    background-color: #878787; 
+    color: white; 
+    border: none;
+    border-radius: 8px; 
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    outline: none;
+}
+
+.submit-button:hover {
+    background-color: #7e7e7e; 
+}
+
+.submit-button:active {
+    transform: translateY(1px); 
+}
+
+/* 弹窗样式 */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(158, 158, 158, 0.6);
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 400px;
+}
+
+.modal-content p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.modal-button-yes, .modal-button-no {
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.modal-button-yes {
+    background-color: #848484;
+    color: #fff;
+}
+
+.modal-button-yes:hover {
+    background-color: #727272;
+    transform: translateY(-1px);
+}
+
+.modal-button-no {
+    background-color: #505050;
+    color: #fff;
+}
+
+.modal-button-no:hover {
+    background-color: #a1a0a0;
+    transform: translateY(-1px);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .cards-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    .info-card {
+        width: 100%;
+        max-width: 400px; /* 移动端卡片宽度 */
+    }
+}

@@ -3,20 +3,21 @@
 {% block title %}{{ _('title_index') }}{% endblock %}
 
 {% block body %}
+    <div class="content-text" style="padding-top: 20vh; text-align: center; color: #fff; text-shadow: 2px 2px 4px rgba(0,0,0,0.8);">
+        <h1 style="font-size: 3rem;">{{ _('index_hdr1') }}</h1>
+        <h2>{{ _('index_hdr2') }}</h2>
+        <h2>{{ _('index_hdr3') }}</h2>
+    </div>
 
-<h3>{{ _('index_hdr1') }}</h3>
-<h3>{{ _('index_hdr2') }}</h3>
-<h3>{{ _('index_hdr3') }}</h3>
-
-<form action="/" method="post">
-  <input autocomplete="off" autofocus name="name" placeholder="{{ _('index_name_plh') }}" type="text" required>
-  ...
-    <select id="language" name="language" required>
-        <option value="" disabled selected>{{ _('index_lang_hdr') }}</option>
-        <option value="en">English</option>
-        <option value="zh">中文 (Chinese)</option>
-    </select>
-  <button type="submit">{{ _('btn_start_journey') }}</button>
-</form>
-
+    <div class="form-section">
+        <form action="/" method="post">
+            <input autocomplete="off" autofocus name="name" placeholder="{{ _('index_name_plh') }}" type="text" required>
+            <select id="language" name="language" required>
+                <option value="" disabled selected>{{ _('index_lang_hdr') }}</option>
+                <option value="en">English</option>
+                <option value="zh">中文 (Chinese)</option>
+            </select>
+            <button type="submit">{{ _('btn_start_journey') }}</button>
+        </form>
+    </div>
 {% endblock %}

@@ -1,113 +1,302 @@
-{% extends "layout.html" %}
+{% extends "base.html" %}
 {% block title %}{{ _('title_preferences') }}{% endblock %}
+
 {% block body %}
-<h3>{{ _('pref_hdr') }}</h3>
+<div class="info-content-wrapper">
+  <h4 class="main-title">{{ _('pref_hdr') }}</h4>
 
-<form id="preferences-form" method="post">
-  <input type="hidden" name="user_id" value="{{ user_id }}">
+  <form id="preferences-form" method="post">
+    <input type="hidden" name="user_id" value="{{ user_id }}">
 
-  <!-- ================= 第 1 页：旅行性格 ================= -->
-  <div class="page" id="page-1">
-    <h4>{{ _('pref_part1') }}</h4>
+    <!-- ================= 第 1 页：旅行性格 ================= -->
+    <div class="page" id="page-1" data-bg-img="{{ url_for('static', filename='images/pf_bg1.jpg') }}">
+      <div class="cards-container">
+        <!-- 问题 1 -->
+        <div class="info-card">
+          <h4>{{ _('pref_q1') }}</h4>
+          <div class="form-options">
+            <label class="option-item">
+              <input type="radio" name="social" value="热闹喧嚣" required>
+              {{ _('pref_lively') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="social" value="安静独处">
+              {{ _('pref_quiet') }}
+            </label>
+          </div>
+        </div>
 
-    <p>1. {{ _('pref_q1') }}</p>
-    <label><input type="radio" name="social" value="热闹喧嚣" required> {{ _('pref_lively') }}</label>
-    <label><input type="radio" name="social" value="安静独处"> {{ _('pref_quiet') }}</label><br><br>
+        <!-- 问题 2 -->
+        <div class="info-card">
+          <h4>{{ _('pref_q2') }}</h4>
+          <div class="form-options">
+            <label class="option-item">
+              <input type="radio" name="exploration" value="勇敢探索" required>
+              {{ _('pref_explore') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="exploration" value="稳妥安全">
+              {{ _('pref_safe') }}
+            </label>
+          </div>
+        </div>
 
-    <p>2. {{ _('pref_q2') }}</p>
-    <label><input type="radio" name="exploration" value="勇敢探索" required> {{ _('pref_explore') }}</label>
-    <label><input type="radio" name="exploration" value="稳妥安全"> {{ _('pref_safe') }}</label><br><br>
+        <!-- 问题 3 -->
+        <div class="info-card">
+          <h4>{{ _('pref_q3') }}</h4>
+          <div class="form-options">
+            <label class="option-item">
+              <input type="radio" name="popularity" value="大众热门景点" required>
+              {{ _('pref_popular') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="popularity" value="小众冷门去处">
+              {{ _('pref_hidden') }}
+            </label>
+          </div>
+        </div>
+      </div>
 
-    <p>3. {{ _('pref_q3') }}</p>
-    <label><input type="radio" name="popularity" value="大众热门景点" required> {{ _('pref_popular') }}</label>
-    <label><input type="radio" name="popularity" value="小众冷门去处"> {{ _('pref_hidden') }}</label><br><br>
+      <button type="button" class="submit-button" onclick="nextPage(2)">{{ _('btn_next') }}</button>
+    </div>
 
-    <button type="button" onclick="nextPage(2)">{{ _('btn_next') }}</button>
-  </div>
+    <!-- ================= 第 2 页：旅行目的 ================= -->
+    <div class="page" id="page-2" style="display:none" data-bg-img="{{ url_for('static', filename='images/pf_bg2.jpg') }}">
+      <div class="cards-container">
+        <div class="info-card">
+          <h4>{{ _('pref_value') }}</h4>
+          <div class="form-options">
+            <label class="option-item">
+              <input type="radio" name="value" value="享受美食和放松身心" required>
+              {{ _('value_food_relax') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="value" value="获得新知与个人成长">
+              {{ _('value_growth') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="value" value="结交朋友与分享快乐">
+              {{ _('value_social') }}
+            </label>
+          </div>
+        </div>
 
-  <!-- ================= 第 2 页：旅行目的 ================= -->
-  <div class="page" id="page-2" style="display:none">
-    <h4>{{ _('pref_part2') }}</h4>
+        <div class="info-card">
+          <h4>{{ _('pref_experience') }}</h4>
+          <div class="form-options">
+            <label class="option-item">
+              <input type="radio" name="experience" value="当地生活与传统手工" required>
+              {{ _('exp_local') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="experience" value="休闲放松与疗愈康养">
+              {{ _('exp_relax') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="experience" value="宗教灵性与神秘体验">
+              {{ _('exp_spirit') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="experience" value="运动挑战与极限探险">
+              {{ _('exp_adventure') }}
+            </label>
+          </div>
+        </div>
 
-    <p>1. {{ _('pref_value') }}</p>
-    <label><input type="radio" name="value" value="享受美食和放松身心" required> {{ _('value_food_relax') }}</label>
-    <label><input type="radio" name="value" value="获得新知与个人成长"> {{ _('value_growth') }}</label>
-    <label><input type="radio" name="value" value="结交朋友与分享快乐"> {{ _('value_social') }}</label><br><br>
+        <div class="info-card">
+          <h4>{{ _('pref_culture') }}</h4>
+          <div class="form-options">
+            <label class="option-item">
+              <input type="radio" name="culture" value="自然与风光" required>
+              {{ _('culture_nature') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="culture" value="历史与文化">
+              {{ _('culture_history') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="culture" value="宗教与民族">
+              {{ _('culture_religion') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="culture" value="艺术与设计">
+              {{ _('culture_art') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="culture" value="美食与娱乐">
+              {{ _('culture_food') }}
+            </label>
+          </div>
+        </div>
+      </div>
 
-    <p>2. {{ _('pref_experience') }}</p>
-    <label><input type="radio" name="experience" value="当地生活与传统手工" required> {{ _('exp_local') }}</label>
-    <label><input type="radio" name="experience" value="休闲放松与疗愈康养"> {{ _('exp_relax') }}</label>
-    <label><input type="radio" name="experience" value="宗教灵性与神秘体验"> {{ _('exp_spirit') }}</label>
-    <label><input type="radio" name="experience" value="运动挑战与极限探险"> {{ _('exp_adventure') }}</label><br><br>
+      <button type="button" class="submit-button" onclick="nextPage(3)">{{ _('btn_next') }}</button>
+    </div>
 
-    <p>3. {{ _('pref_culture') }}</p>
-    <label><input type="radio" name="culture" value="自然与风光" required> {{ _('culture_nature') }}</label>
-    <label><input type="radio" name="culture" value="历史与文化"> {{ _('culture_history') }}</label>
-    <label><input type="radio" name="culture" value="宗教与民族"> {{ _('culture_religion') }}</label>
-    <label><input type="radio" name="culture" value="艺术与设计"> {{ _('culture_art') }}</label>
-    <label><input type="radio" name="culture" value="美食与娱乐"> {{ _('culture_food') }}</label><br><br>
+    <!-- ================= 第 3 页：地点/资源偏好 ================= -->
+    <div class="page" id="page-3" style="display:none" data-bg-img="{{ url_for('static', filename='images/pf_bg3.jpg') }}">
+      <div class="cards-container">
+        <div class="info-card">
+          <h4>{{ _('pref_scene') }}</h4>
+          <div class="form-options">
+            <label class="option-item">
+              <input type="radio" name="scene" value="自然" required>
+              {{ _('scene_nature') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="scene" value="乡村">
+              {{ _('scene_village') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="scene" value="古城">
+              {{ _('scene_ancient') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="scene" value="都市">
+              {{ _('scene_city') }}
+            </label>
+          </div>
+        </div>
 
-    <button type="button" onclick="nextPage(3)">{{ _('btn_next') }}</button>
-  </div>
+        <div class="info-card">
+          <h4>{{ _('pref_landscape') }}</h4>
+          <div class="form-options">
+            <label class="option-item">
+              <input type="radio" name="landscape" value="高原" required>
+              {{ _('landscape_plateau') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="landscape" value="山地">
+              {{ _('landscape_mountain') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="landscape" value="平原">
+              {{ _('landscape_plain') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="landscape" value="海岛">
+              {{ _('landscape_island') }}
+            </label>
+          </div>
+        </div>
 
-  <!-- ================= 第 3 页：地点/资源偏好 ================= -->
-  <div class="page" id="page-3" style="display:none">
-    <h4>{{ _('pref_part3') }}</h4>
+        <div class="info-card">
+          <h4>{{ _('pref_life') }}</h4>
+          <div class="form-options">
+            <label class="option-item">
+              <input type="radio" name="life" value="植物" required>
+              {{ _('life_plant') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="life" value="动物">
+              {{ _('life_animal') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="life" value="人类">
+              {{ _('life_human') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="life" value="无生命">
+              {{ _('life_none') }}
+            </label>
+          </div>
+        </div>
+      </div>
 
-    <p>1. {{ _('pref_scene') }}</p>
-    <label><input type="radio" name="scene" value="自然" required> {{ _('scene_nature') }}</label>
-    <label><input type="radio" name="scene" value="乡村"> {{ _('scene_village') }}</label>
-    <label><input type="radio" name="scene" value="古城"> {{ _('scene_ancient') }}</label>
-    <label><input type="radio" name="scene" value="都市"> {{ _('scene_city') }}</label><br><br>
+      <button type="button" class="submit-button" onclick="nextPage(4)">{{ _('btn_next') }}</button>
+    </div>
 
-    <p>2. {{ _('pref_landscape') }}</p>
-    <label><input type="radio" name="landscape" value="高原" required> {{ _('landscape_plateau') }}</label>
-    <label><input type="radio" name="landscape" value="山地"> {{ _('landscape_mountain') }}</label>
-    <label><input type="radio" name="landscape" value="平原"> {{ _('landscape_plain') }}</label>
-    <label><input type="radio" name="landscape" value="海岛"> {{ _('landscape_island') }}</label><br><br>
+    <!-- ================= 第 4 页：饮食/口味偏好 ================= -->
+    <div class="page" id="page-4" style="display:none" data-bg-img="{{ url_for('static', filename='images/pf_bg4.jpg') }}">
+      <div class="cards-container">
+        <div class="info-card">
+          <h4>{{ _('pref_taste') }}</h4>
+          <div class="form-options">
+            <label class="option-item">
+              <input type="radio" name="taste" value="麻辣" required>
+              {{ _('taste_spicy') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="taste" value="酸甜">
+              {{ _('taste_sweet_sour') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="taste" value="咸香">
+              {{ _('taste_salty') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="taste" value="鲜甜清淡">
+              {{ _('taste_light') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="taste" value="香料浓郁">
+              {{ _('taste_aromatic') }}
+            </label>
+          </div>
+        </div>
 
-    <p>3. {{ _('pref_life') }}</p>
-    <label><input type="radio" name="life" value="植物" required> {{ _('life_plant') }}</label>
-    <label><input type="radio" name="life" value="动物"> {{ _('life_animal') }}</label>
-    <label><input type="radio" name="life" value="人类"> {{ _('life_human') }}</label>
-    <label><input type="radio" name="life" value="无生命"> {{ _('life_none') }}</label><br><br>
+        <div class="info-card">
+          <h4>{{ _('pref_food_att') }}</h4>
+          <div class="form-options">
+            <label class="option-item">
+              <input type="radio" name="food_attitude" value="非常愿意尝试" required>
+              {{ _('att_willing') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="food_attitude" value="愿意尝试">
+              {{ _('att_maybe') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="food_attitude" value="不太愿意尝试">
+              {{ _('att_unwilling') }}
+            </label>
+          </div>
+        </div>
 
-    <button type="button" onclick="nextPage(4)">{{ _('btn_next') }}</button>
-  </div>
+        <div class="info-card">
+          <h4>{{ _('pref_food_exp') }}</h4>
+          <div class="form-options">
+            <label class="option-item">
+              <input type="radio" name="food_exp" value="街头小吃" required>
+              {{ _('food_street') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="food_exp" value="市井风味">
+              {{ _('food_local') }}
+            </label>
+            <label class="option-item">
+              <input type="radio" name="food_exp" value="精致料理">
+              {{ _('food_fine') }}
+            </label>
+          </div>
+        </div>
+      </div>
 
-  <!-- ================= 第 4 页：饮食/口味偏好 ================= -->
-  <div class="page" id="page-4" style="display:none">
-    <h4>{{ _('pref_part4') }}</h4>
-
-    <p>1. {{ _('pref_taste') }}</p>
-    <label><input type="radio" name="taste" value="麻辣" required> {{ _('taste_spicy') }}</label>
-    <label><input type="radio" name="taste" value="酸甜"> {{ _('taste_sweet_sour') }}</label>
-    <label><input type="radio" name="taste" value="咸香"> {{ _('taste_salty') }}</label>
-    <label><input type="radio" name="taste" value="鲜甜清淡"> {{ _('taste_light') }}</label>
-    <label><input type="radio" name="taste" value="香料浓郁"> {{ _('taste_aromatic') }}</label><br><br>
-
-    <p>2. {{ _('pref_food_att') }}</p>
-    <label><input type="radio" name="food_attitude" value="非常愿意尝试" required> {{ _('att_willing') }}</label>
-    <label><input type="radio" name="food_attitude" value="愿意尝试"> {{ _('att_maybe') }}</label>
-    <label><input type="radio" name="food_attitude" value="不太愿意尝试"> {{ _('att_unwilling') }}</label><br><br>
-
-    <p>3. {{ _('pref_food_exp') }}</p>
-    <label><input type="radio" name="food_exp" value="街头小吃" required> {{ _('food_street') }}</label>
-    <label><input type="radio" name="food_exp" value="市井风味"> {{ _('food_local') }}</label>
-    <label><input type="radio" name="food_exp" value="精致料理"> {{ _('food_fine') }}</label><br><br>
-
-    <button type="submit" id="submit-btn">{{ _('btn_submit') }}</button>
-  </div>
-</form>
+      <button type="submit" id="submit-btn" class="submit-button">{{ _('btn_submit') }}</button>
+    </div>
+  </form>
+</div>
 
 <script>
-function nextPage(n) {
-  document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
-  document.getElementById('page-' + n).style.display = 'block';
-}
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', () => {
+  // 把第一张图先刷上去
+  const imgPath = document.getElementById('page-1').dataset.bgImg;
+  document.querySelector('.main-bg-container').style.backgroundImage = `url(${imgPath})`;
+  // 再显示第一页
   nextPage(1);
 });
+
+let currentPage = 1;
+
+function nextPage(n){
+  document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+  const target = document.getElementById('page-'+n);
+  target.style.display = 'block';
+
+  // 读取本地图片路径
+  const imgPath = target.dataset.bgImg;
+  document.querySelector('.main-bg-container').style.backgroundImage = `url(${imgPath})`;
+}
 
 document.getElementById('preferences-form').addEventListener('submit', function (e) {
   const btn = document.getElementById('submit-btn');
