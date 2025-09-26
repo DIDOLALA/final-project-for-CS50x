@@ -15,7 +15,7 @@ class User(db.Model):
     age = db.Column(db.String(20), nullable=True)
     profession = db.Column(db.String(50), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    username = db.Column(db.String(80), unique=True, nullable=True)   # 先允许空
+    username = db.Column(db.String(80), unique=True, nullable=True) 
     password_hash = db.Column(db.String(128), nullable=True) 
 
     def set_password(self, pwd):
@@ -32,7 +32,6 @@ class Preference(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Limitation(db.Model):
-    """保存用户填写的实际限制"""
     __tablename__ = 'limitation'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False, index=True)
@@ -42,9 +41,8 @@ class Limitation(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 class Itinerary(db.Model):
-    """保存最终行程，避免重复调用 LLM"""
     __tablename__ = 'itinerary'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, nullable=False, index=True)
-    content = db.Column(db.Text, nullable=False)   # 最终渲染的 markdown
+    content = db.Column(db.Text, nullable=False) 
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

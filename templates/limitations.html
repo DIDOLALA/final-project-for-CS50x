@@ -15,7 +15,7 @@ background-image: url('{{ url_for('static', filename='images/lim_bg.jpg') }}');
 
         <div class="cards-container">
 
-          <!-- 卡片 1：时长 -->
+          <!-- Card 1 -->
           <div class="info-card">
             <h4>{{ _('lim_duration') }}</h4>
             <div class="form-options">
@@ -31,7 +31,7 @@ background-image: url('{{ url_for('static', filename='images/lim_bg.jpg') }}');
             </div>
           </div>
 
-          <!-- 卡片 2：节奏 -->
+          <!-- Card 2 -->
           <div class="info-card">
             <h4>{{ _('lim_pace') }}</h4>
             <div class="form-options">
@@ -47,7 +47,7 @@ background-image: url('{{ url_for('static', filename='images/lim_bg.jpg') }}');
             </div>
           </div>
 
-          <!-- 卡片 3：预算 -->
+          <!-- Card 3 -->
           <div class="info-card">
             <h4>{{ _('lim_budget') }}</h4>
             <div class="form-options">
@@ -64,16 +64,12 @@ background-image: url('{{ url_for('static', filename='images/lim_bg.jpg') }}');
           </div>
 
       </div>
-
-      <!-- 提交按钮：使用公共组件样式 -->
       <button type="submit" id="submit-btn" class="submit-button c-form-button">{{ _('btn_submit') }}</button>
     </form>
 
     </div>
   </div>
 </div>
-
-<!-- 原脚本逻辑保持不变 -->
 <script>
 document.getElementById('limitation-form').addEventListener('submit', function (e) {
   const btn = document.getElementById('submit-btn');

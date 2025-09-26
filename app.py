@@ -10,7 +10,6 @@ import markdown2
 
 logging.basicConfig(level=logging.INFO)   
 
-# 加载 .env 文件
 load_dotenv()
 
 DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
@@ -19,25 +18,23 @@ DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 def gettext(key, lang=None):
     """lang 为 None 则自动取 session['language']"""
     lang = lang or session.get('language', 'en')
-    return TRANS.get(key, {}).get(lang, key)          # 找不到 key 直接回显 key
+    return TRANS.get(key, {}).get(lang, key)
 
-# 配置 application
 def create_app():
     app = Flask(__name__)
     app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    app.secret_key = os.getenv("SECRET_KEY", "dev-secret-key")  # 添加密钥用于session
+    app.secret_key = os.getenv("SECRET_KEY", "dev-secret-key")
 
     db.init_app(app)
 
-    app.jinja_env.globals['_'] = gettext                # 模板里直接用 {{ _('btn_next') }}
+    app.jinja_env.globals['_'] = gettext   
 
     
     def login_required(f):
         @wraps(f)
         def decorated(*args, **kwargs):
-            if 'uid' not in session:                      # 只要 session 没有 uid 就跳
-                # 把当前想访问的 endpoint 和参数存到 next，登录后自动回来
+            if 'uid' not in session:                      
                 return redirect(url_for('login', next=f.__name__, **request.view_args))
             return f(*args, **kwargs)
         return decorated
@@ -53,7 +50,7 @@ def create_app():
             if User.query.filter_by(username=u).first():
                 flash("用户名已存在")
                 return redirect(url_for("register"))
-            new_user = User(username=u, name=u)  # name 默认用用户名
+            new_user = User(username=u, name=u)  
             new_user.set_password(p)
             db.session.add(new_user)
             db.session.commit()
@@ -71,7 +68,7 @@ def create_app():
                 session['uid'] = user.id
                 session['uname'] = user.username
                 session.pop('played_once', None)
-                # 如果存在 next 参数则跳转
+
                 next_endpoint = request.args.get("next")
                 if next_endpoint:
                     return redirect(url_for(next_endpoint, **request.args.to_dict()))
@@ -91,10 +88,8 @@ def create_app():
         return redirect(url_for("index"))
     
     
-    # 首页
     @app.route("/", methods=["GET", "POST"])
     def index():
-        # 未登录且已玩过一轮 → 直接去登录
         if not session.get('uid') and session.get('played_once'):
             flash("您已完成一次测试，如需继续，请先登录")
             return redirect(url_for('login'))
@@ -105,7 +100,6 @@ def create_app():
             if not name or language not in ("en", "zh"):
                 return redirect("/")
             
-            # 存储到session中，稍后在information页面创建用户时使用
             session['temp_name'] = name
             session['language'] = language 
             session.permanent = True 
@@ -114,7 +108,7 @@ def create_app():
             return redirect(url_for("information"))
         return render_template("index.html")
 
-    # 信息页
+
     @app.route("/information", methods=["GET", "POST"])
     def information():
         if request.method == "POST":
@@ -131,13 +125,12 @@ def create_app():
             return redirect(url_for("preferences", user_id=user.id))
         return render_template("information.html", need_confirm=session.get('uid') is not None)
 
-    # 偏好页 - 同时处理GET和POST
+
     @app.route("/preferences/<int:user_id>", methods=["GET", "POST"])
     def preferences(user_id):
         user = User.query.get_or_404(user_id)
         
         if request.method == "POST":
-            # 处理表单提交
             data = request.form.to_dict()
             data['user_id'] = user_id
             
@@ -149,7 +142,6 @@ def create_app():
             return redirect(url_for("result", user_id=user_id))     
         return render_template("preferences.html", user=user, user_id=user_id)
 
-    # 偏好 API (保留用于可能的AJAX实现)
     @app.route("/api/preferences", methods=["POST"])
     def api_preferences():
         data = request.get_json(silent=True) or {}
@@ -167,7 +159,7 @@ def create_app():
 
         return jsonify({"ok": True, "msg": "Preferences saved", "next": url_for("result", user_id=user_id)})
 
-    # 结果页 
+
     @app.route("/result/<int:user_id>")
     def result(user_id):
         user = User.query.get_or_404(user_id)
@@ -176,11 +168,11 @@ def create_app():
         if not pref:
             return "No preferences found for this user.", 404
 
-        # 获取用户语言偏好
+ 
         user_language = user.language or session.get('language', 'en')
         prompt_language = "中文" if user_language == 'zh' else "English"
 
-        # 构造 LLM Prompt
+
         prompt = f"""
         You are a senior Chinese travel advisor and itinerary planner, 
         recommending a dream travel destination in China for a foreign user 
@@ -223,7 +215,6 @@ def create_app():
             <strong>旅行建议:</strong> (≤20 字)
         """
 
-        # 调用 DeepSeek API
         api_key = os.getenv("DEEPSEEK_API_KEY")
         if not api_key:
             return "API key not configured.", 500
@@ -255,7 +246,6 @@ def create_app():
             
             result_text = data["choices"][0]["message"]["content"]
 
-            # 写进 session，给 itinerary 用
             session['result_text'] = result_text
 
             return render_template("result.html", user=user, result=result_text)
@@ -274,7 +264,6 @@ def create_app():
     def limitations(user_id):
         user = User.query.get_or_404(user_id)
         if request.method == "POST":
-            # 把所有多选字段转成 JSON 字符串
             lim = Limitation(
                 user_id=user_id,
                 duration=request.form.get("duration"),
@@ -290,10 +279,7 @@ def create_app():
     @app.route("/itinerary/<int:user_id>")
     def itinerary(user_id):
         user = User.query.get_or_404(user_id)
-
-        # 1. 读取梦想偏好
         pref = Preference.query.filter_by(user_id=user_id).order_by(Preference.id.desc()).first()
-        # 2. 读取限制
         lim = Limitation.query.filter_by(user_id=user_id).order_by(Limitation.id.desc()).first()
         
         if not pref or not lim:
@@ -301,8 +287,6 @@ def create_app():
             return redirect(url_for('preferences', user_id=user_id))
 
         result_text = session.get('result_text', '')
-
-        # 3. 构造 prompt
         user_language = user.language or session.get('language', 'en')
         prompt_language = "中文" if user_language == 'zh' else "English"
 
@@ -399,7 +383,6 @@ def create_app():
             <strong>可能的挑战与建议:</strong> (≤25 字)
         """
 
-        # 4. 调用 DeepSeek
         api_key = os.getenv("DEEPSEEK_API_KEY")
         if not api_key:
             return "API key missing", 500
@@ -419,7 +402,6 @@ def create_app():
                            user=user,
                            result="AI 推荐生成超时，请稍后再试。"), 503
 
-        # 5. 落库 & 渲染
         db.session.add(Itinerary(user_id=user_id, content=content))
         db.session.commit()
         return render_template("itinerary.html", user=user, content=content) 
@@ -428,9 +410,8 @@ def create_app():
     @app.route('/replay/<int:user_id>')
     def replay(user_id):
         """统一重玩入口：已登录直达 preferences，未登录先登录"""
-        if session.get('uid'):                      # 已登录
+        if session.get('uid'):  
             return redirect(url_for('preferences', user_id=user_id))
-        # 未登录：记下想重玩，登录后再跳
         session['after_login'] = 'replay'
         session['replay_uid'] = user_id
         return redirect(url_for('login'))

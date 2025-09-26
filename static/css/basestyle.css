@@ -3,23 +3,21 @@
         margin: 0;
         padding: 0;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        display: flex; /* 使用 Flexbox 布局 */
-        flex-direction: column; /* 垂直方向排列 */
+        display: flex;
+        flex-direction: column; 
         {% block page_background %}{% endblock %}
-        background-repeat: no-repeat;     /* 不重复 */
-        background-size: cover;           /* 拉伸并保持比例，覆盖整个屏幕 */
-        background-position: center;      /* 居中对齐 */
-        background-attachment: fixed;     /* （可选）固定背景，页面滚动时不动 */
+        background-repeat: no-repeat; 
+        background-size: cover; 
+        background-position: center; 
+        background-attachment: fixed; 
         }
 
-/* 让页眉始终在顶部 */
 header {
-    position: fixed;          /* 建立层叠上下文 */
-    top: 0;
+    position: fixed;  
     left: 0;
     width: 100%;
     z-index: 1030;
-    height: 56px;               /* 确保在上层 */
+    height: 56px;              
     padding: 0.5em 1em;
     background: rgba(245, 245, 245, 0.5);
     border-bottom: 1px solid rgba(255,255,255,.1);
@@ -31,14 +29,12 @@ nav {
     height: 100%;
 }
 
-/* 让内容区域填充剩余空间 */
 .page-wrapper {
-    flex-grow: 1; /* 占据剩余空间 */
+    flex-grow: 1; 
     display: flex;
     flex-direction: column;
 }
 
-/* 以下是为 information.html 页面新增的样式 */   
 .main-bg-container {
     flex-grow: 1;
     display: flex;
@@ -47,16 +43,16 @@ nav {
     padding: 2rem 1rem;
     background-size: cover;
     background-position: center;
-    background-attachment: fixed; /* 固定背景，滚动时有视差效果 */
-    margin-top: 0; /* 移除可能的多余边距 */
+    background-attachment: fixed; 
+    margin-top: 0;
 }
 
 .info-content-wrapper {
     max-width: 1200px;
     width: 100%;
     padding: 0rem;
-    text-align: center; /* 居中标题 */
-    background: transparent; /* 确保背景透明 */
+    text-align: center; 
+    background: transparent; 
     margin-top: 0;
     display: flex;
     flex-direction: column;
@@ -74,19 +70,19 @@ nav {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem; /* 卡片间距 */
+    gap: 1rem; 
 }
 
 .info-card {
-    background: rgba(255, 255, 255, 0.6); /* 半透明白色背景 */
-    backdrop-filter: blur(5px); /* 毛玻璃效果 */
+    background: rgba(255, 255, 255, 0.6); 
+    backdrop-filter: blur(5px); 
     border-radius: 15px;
     padding: 1.5rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    flex: 0 0 30%; /* 每个卡片平均占据空间 */
-    min-width: 280px; /* 防止卡片过窄 */
+    flex: 0 0 30%; 
+    min-width: 280px; 
     max-width: 350px;
-    text-align: left; /* 内容左对齐 */
+    text-align: left; 
 }
 
 .info-card h4 {
@@ -135,7 +131,6 @@ nav {
     transform: translateY(1px); 
 }
 
-/* 弹窗样式 */
 .modal-backdrop {
     position: fixed;
     top: 0;
@@ -198,7 +193,6 @@ nav {
     transform: translateY(-1px);
 }
 
-/* 响应式设计 */
 @media (max-width: 768px) {
     .cards-container {
         flex-direction: column;
@@ -206,6 +200,6 @@ nav {
     }
     .info-card {
         width: 100%;
-        max-width: 400px; /* 移动端卡片宽度 */
+        max-width: 400px; 
     }
 }

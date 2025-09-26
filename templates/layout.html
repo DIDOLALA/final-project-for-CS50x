@@ -43,8 +43,6 @@
     
     <script>
         const slideshowDiv = document.getElementById('background-slideshow');
-        
-        // 假设你的图片放在 static/images 文件夹下
         const images = [
             "{{ url_for('static', filename='images/bg1.jpg') }}",
             "{{ url_for('static', filename='images/bg2.jpg') }}",
@@ -65,13 +63,11 @@
         const div2 = document.getElementById('background-slideshow-2');
 
         function changeBackground() {
-            // 预加载下一张图片，并将其设置为非活动的div的背景
             const nextIndex = (currentIndex + 1) % images.length;
             const nextDiv = currentDiv === 1 ? div2 : div1;
             
             nextDiv.style.backgroundImage = `url(${images[nextIndex]})`;
 
-            // 切换active类，实现淡入淡出
             if (currentDiv === 1) {
                 div1.classList.remove('active');
                 div2.classList.add('active');
@@ -85,7 +81,6 @@
             currentIndex = nextIndex;
         }
 
-        // 初始设置第一张图片
         window.onload = function() {
             div1.style.backgroundImage = `url(${images[0]})`;
             div1.classList.add('active');

@@ -8,10 +8,10 @@
   <form id="preferences-form" method="post">
     <input type="hidden" name="user_id" value="{{ user_id }}">
 
-    <!-- ================= 第 1 页：旅行性格 ================= -->
+    <!-- ================= Page 1 ================= -->
     <div class="page" id="page-1" data-bg-img="{{ url_for('static', filename='images/pf_bg1.jpg') }}">
       <div class="cards-container">
-        <!-- 问题 1 -->
+        <!-- Question 1 -->
         <div class="info-card">
           <h4>{{ _('pref_q1') }}</h4>
           <div class="form-options">
@@ -26,7 +26,7 @@
           </div>
         </div>
 
-        <!-- 问题 2 -->
+        <!-- Question 2 -->
         <div class="info-card">
           <h4>{{ _('pref_q2') }}</h4>
           <div class="form-options">
@@ -41,7 +41,7 @@
           </div>
         </div>
 
-        <!-- 问题 3 -->
+        <!--Question 3 -->
         <div class="info-card">
           <h4>{{ _('pref_q3') }}</h4>
           <div class="form-options">
@@ -60,7 +60,7 @@
       <button type="button" class="submit-button" onclick="nextPage(2)">{{ _('btn_next') }}</button>
     </div>
 
-    <!-- ================= 第 2 页：旅行目的 ================= -->
+    <!-- ================= Page 2 ================= -->
     <div class="page" id="page-2" style="display:none" data-bg-img="{{ url_for('static', filename='images/pf_bg2.jpg') }}">
       <div class="cards-container">
         <div class="info-card">
@@ -133,7 +133,7 @@
       <button type="button" class="submit-button" onclick="nextPage(3)">{{ _('btn_next') }}</button>
     </div>
 
-    <!-- ================= 第 3 页：地点/资源偏好 ================= -->
+    <!-- ================= Page 3 ================= -->
     <div class="page" id="page-3" style="display:none" data-bg-img="{{ url_for('static', filename='images/pf_bg3.jpg') }}">
       <div class="cards-container">
         <div class="info-card">
@@ -206,7 +206,7 @@
       <button type="button" class="submit-button" onclick="nextPage(4)">{{ _('btn_next') }}</button>
     </div>
 
-    <!-- ================= 第 4 页：饮食/口味偏好 ================= -->
+    <!-- ================= Page 4 ================= -->
     <div class="page" id="page-4" style="display:none" data-bg-img="{{ url_for('static', filename='images/pf_bg4.jpg') }}">
       <div class="cards-container">
         <div class="info-card">
@@ -279,10 +279,8 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-  // 把第一张图先刷上去
   const imgPath = document.getElementById('page-1').dataset.bgImg;
   document.querySelector('.main-bg-container').style.backgroundImage = `url(${imgPath})`;
-  // 再显示第一页
   nextPage(1);
 });
 
@@ -293,22 +291,20 @@ function nextPage(n){
   const target = document.getElementById('page-'+n);
   target.style.display = 'block';
 
-  // 读取本地图片路径
   const imgPath = target.dataset.bgImg;
   document.querySelector('.main-bg-container').style.backgroundImage = `url(${imgPath})`;
 }
 
 document.getElementById('preferences-form').addEventListener('submit', function (e) {
   const btn = document.getElementById('submit-btn');
-  /* 如果按钮已经是禁用状态，就阻止重复提交 */
   if (btn.disabled) {
     e.preventDefault();
     return;
   }
-  /* 立即禁用并换文字 */
+
   btn.disabled = true;
   btn.innerText = "{{ _('btn_waiting') }}";
-  /* 60 秒后恢复 */
+
   setTimeout(function () {
     btn.disabled = false;
     btn.innerText = "{{ _('btn_submit') }}";

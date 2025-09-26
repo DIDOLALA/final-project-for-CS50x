@@ -1,10 +1,5 @@
-# translations.py
-# 全站双语语言包 —— 一键切换中英文
-# 键 = 模板/后端里引用的标识符
-# 值 = {"en": "英文", "zh": "中文"}
-
 TRANS = {
-    # 公共导航 / 按钮
+    # Public Navigation / Buttons
     "title_index":           {"en": "Welcome",                       "zh": "欢迎"},
     "title_information":     {"en": "About You",                     "zh": "关于您"},
     "title_preferences":     {"en": "Travel Preferences",            "zh": "旅行偏好"},
@@ -30,7 +25,7 @@ TRANS = {
     "btn_register":          {"en": "Register",                       "zh": "注册"},
     "hello_guest":           {"en": "Hello",                          "zh": "您好"},
 
-    # 登录页
+    # Login.html
     "title_login":           {"en": "Login",                          "zh": "登录"},
     "login_hdr":             {"en": "Please login",                   "zh": "登录"},
     "login_user_plh":        {"en": "Username",                       "zh": "用户名"},
@@ -63,7 +58,7 @@ TRANS = {
     "btn_no":                {"en": "No",                             "zh": "否"},  
     "btn_begin":             {"en": "Begin",                          "zh": "开始"},    
 
-     # 国籍分组 & 具体国家
+     # Nationality
     "nat_asia":                {"en": "Asia",                  "zh": "亚洲"},
     "nat_china":               {"en": "China",                 "zh": "中国"},
     "nat_japan":               {"en": "Japan",                 "zh": "日本"},
@@ -91,7 +86,7 @@ TRANS = {
     "nat_australia":           {"en": "Australia",             "zh": "澳大利亚"},
     "nat_newzealand":          {"en": "New Zealand",           "zh": "新西兰"},
 
-    # 年龄
+    # Age
     "age_under15":             {"en": "≤15 years old",         "zh": "≤15岁"},
     "age_16_25":               {"en": "16–25 years old",       "zh": "16–25岁"},
     "age_26_35":               {"en": "26–35 years old",       "zh": "26–35岁"},
@@ -99,7 +94,7 @@ TRANS = {
     "age_50_65":               {"en": "50–65 years old",       "zh": "50–65岁"},
     "age_over65":              {"en": "Over 65 years old",     "zh": "65岁以上"},
 
-    # 职业
+    # Profession
     "prof_art":                {"en": "Art / Design",            "zh": "艺术/设计"},
     "prof_humanities":         {"en": "Humanities / Education",  "zh": "人文/教育"},
     "prof_tech":               {"en": "Technology / Engineering", "zh": "科技/工程"},
@@ -108,7 +103,7 @@ TRANS = {
     "prof_others":             {"en": "Others",                  "zh": "其他"},
     
     
-    # preferences.html —— 旅行性格
+    # preferences.html —— page 1
     "pref_hdr":              {"en": "We'd like to understand your travel preferences:",
                               "zh": "请让我们了解您的旅行偏好："},
     "pref_part1":            {"en": "Part 1: Travel Personality",    "zh": "第一部分：旅行性格"},
@@ -125,7 +120,7 @@ TRANS = {
     "pref_popular":          {"en": "Popular hotspots",              "zh": "大众热门景点"},
     "pref_hidden":           {"en": "Hidden gems",                   "zh": "小众冷门去处"},
 
-    # preferences.html —— 旅行目的
+    # preferences.html —— page 2
     "pref_part2":            {"en": "Part 2: Travel Purpose",        "zh": "第二部分：旅行目的"},
     "pref_value":            {"en": "The core value of travel for you is:",
                               "zh": "于您旅行核心价值是："},
@@ -146,7 +141,7 @@ TRANS = {
     "culture_art":           {"en": "Art & design",                  "zh": "艺术与设计"},
     "culture_food":          {"en": "Food & entertainment",          "zh": "美食与娱乐"},
 
-    # preferences.html —— 地点/资源偏好
+    # preferences.html —— page 3
     "pref_part3":            {"en": "Part 3: Place & Resource",      "zh": "第三部分：地点/资源偏好"},
     "pref_scene":            {"en": "Your travel scene preference is:", 
                                                                      "zh": "您对旅行场景的偏好："},
@@ -166,7 +161,7 @@ TRANS = {
     "life_human":            {"en": "Humans",                        "zh": "人类"},
     "life_none":             {"en": "Inanimate",                     "zh": "无生命"},
 
-    # preferences.html —— 饮食/口味偏好
+    # preferences.html —— page 4
     "pref_part4":            {"en": "Part 4: Food & Taste",          "zh": "第四部分：饮食/口味偏好"},
     "pref_taste":            {"en": "What's your favourite taste:",  "zh": "您最喜欢的口味是："},
     "taste_spicy":           {"en": "Spicy & numbing",               "zh": "麻辣"},

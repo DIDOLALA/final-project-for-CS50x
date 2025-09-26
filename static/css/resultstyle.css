@@ -1,8 +1,7 @@
-/* 新增的 Result 页面特定样式 */
 .result-content-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* **主要修改：所有子元素居中** */
+    align-items: center; 
     width: 100%;
     max-width: 900px;
     text-align: center;
@@ -14,7 +13,7 @@
     color: #fffefe;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     align-items: center;
-    justify-content: center; /* **主要修改：标题居中** */
+    justify-content: center; 
     margin-top: 2rem;
     margin-bottom: 1rem;
 }
@@ -28,17 +27,17 @@
     border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     padding: 1.5rem;
-    width: 100%; /* **主要修改：卡片宽度适应父容器** */
+    width: 100%; 
     margin-bottom: 1rem;
     align-items: flex-start;
 }
 
 .result-image {
     flex: 1;
-    max-width: 50%; /* **调整图片宽度占比** */
+    max-width: 50%; 
     border-radius: 10px;
     overflow: hidden;
-    margin-right: 1.5rem; /* **调整右侧边距** */
+    margin-right: 1.5rem; 
 }
 
 .result-image img {
@@ -54,17 +53,17 @@
     text-align: left;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* **保持文字顶部对齐** */
+    justify-content: flex-start;
 }
 
 .result-text {
     line-height: 1.6;
-    text-align: left; /* **保持文字左对齐** */
+    text-align: left; 
 }
 
 .result-text strong {
-    font-weight: 700; /* 字体加粗 */
-    font-size: 1.1em; /* 稍微放大字体 */
+    font-weight: 700; 
+    font-size: 1.1em; 
     margin-top: 1em;
     margin-bottom: 0.5em;
     color: #2c3e50;
@@ -75,7 +74,7 @@
 }
 
 .result-desc {
-    text-align: center; /* **主要修改：描述文字居中** */
+    text-align: center; 
     margin-top: 0em;
     color: #ffffff;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
@@ -119,7 +118,7 @@
     transform: translateY(1px);
 }
 
-/* 移动端响应式 */
+
 @media (max-width: 768px) {
     .result-card-container {
         flex-direction: column;
